@@ -28,12 +28,12 @@ $$\text{Portfolio WACI} = \sum_{i=1}^{n} \left( w_i \times \frac{\text{Scope 1} 
 
 ### Baseline Asset Operational Data
 
-| Ticker | Company Name | Scope 1 & 2 Emissions (tCO2e) | Revenue ($) | Carbon Intensity (tCO2e / $M) |
+| Ticker | Company Name | Scope 1 & 2 Emissions (tCO2e) | Revenue ($B) | Carbon Intensity (tCO2e / $M) |
 | :--- | :--- | :--- | :--- | :--- |
-| **AAPL** | Apple Inc. | 58,500 | $416,300,000,000 | **0.13** |
-| **MSFT** | Microsoft Corp. | 143,500 | $245,100,000,000 | **0.59** |
-| **TSLA** | Tesla, Inc. | 1,060,000 | $96,800,000,000 | **10.92** |
-| **XOM** | Exxon Mobil Corp. | 104,000,000 | $323,900,000,000 | **321.08** |
+| **AAPL** | Apple Inc. | 58,500 | $416.3B | **0.13** |
+| **MSFT** | Microsoft Corp. | 143,500 | $245.1B | **0.59** |
+| **TSLA** | Tesla, Inc. | 1,060,000 | $96.8B | **10.92** |
+| **XOM** | Exxon Mobil Corp. | 104,000,000 | $323.9B | **321.08** |
 
 ---
 
@@ -42,4 +42,3 @@ $$\text{Portfolio WACI} = \sum_{i=1}^{n} \left( w_i \times \frac{\text{Scope 1} 
 * Frontend: HTML5, CSS3, JavaScript (ES6+), Chart.js
 * Backend: Python / Node.js (Vercel Serverless Functions)
 * Deployment & CI/CD: GitHub, Vercel
-
