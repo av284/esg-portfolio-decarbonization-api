@@ -43,12 +43,3 @@ $$\text{Portfolio WACI} = \sum_{i=1}^{n} \left( w_i \times \frac{\text{Scope 1} 
 * Backend: Python / Node.js (Vercel Serverless Functions)
 * Deployment & CI/CD: GitHub, Vercel
 
----
-
-## API Endpoint
-
-### `GET /api`
-
-Recalculates portfolio WACI based on raw asset allocation percentages provided in query parameters (`aapl`, `msft`, `tsla`, `xom`).
-
-Example request: `https://esg-portfolio-decarbonization-api.vercel.app/api?aapl=40&msft=30&tsla=0&xom=30`
