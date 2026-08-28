@@ -8,7 +8,7 @@ Live Application: https://esg-portfolio-decarbonization-api.vercel.app/
 
 ## Overview
 
-This tool enables dynamic portfolio rebalancing across core equity holdings to simulate carbon exposure reduction. Built in compliance with TCFD (Task Force on Climate-related Financial Disclosures) and GHG Protocol reporting standards, the engine recalculates portfolio carbon metrics dynamically as target weights shift.
+This tool enables dynamic portfolio rebalancing across core equity holdings to simulate carbon exposure reduction. Built in compliance with TCFD and GHG Protocol reporting standards, the engine recalculates portfolio carbon metrics dynamically as target weights shift.
 
 ### Key Capabilities
 * Dynamic WACI Modeling: Real-time calculation of weighted carbon intensity per million dollars of revenue (tCO2e / $M Rev).
@@ -28,7 +28,7 @@ $$\text{Portfolio WACI} = \sum_{i=1}^{n} \left( w_i \times \frac{\text{Scope 1} 
 
 ### Baseline Asset Operational Data
 
-| Ticker | Company Name | Scope 1 & 2 Emissions (tCO2e) | Revenue ($B) \vert{} Carbon Intensity (tCO2e / $M) |
+| Ticker | Company Name | Scope 1 & 2 Emissions (tCO2e) | Revenue ($B) | Carbon Intensity (tCO2e / $M) |
 | :--- | :--- | :--- | :--- | :--- |
 | **AAPL** | Apple Inc. | 58,500 | $416.3B | **0.13** |
 | **MSFT** | Microsoft Corp. | 143,500 | $245.1B | **0.59** |
@@ -49,14 +49,6 @@ $$\text{Portfolio WACI} = \sum_{i=1}^{n} \left( w_i \times \frac{\text{Scope 1} 
 
 ### `GET /api`
 
-Recalculates portfolio WACI based on raw asset allocation percentages provided in query parameters.
+Recalculates portfolio WACI based on raw asset allocation percentages provided in query parameters (`aapl`, `msft`, `tsla`, `xom`).
 
-#### Request Parameters
-| Parameter | Type | Range | Description |
-| :--- | :--- | :--- | :--- |
-| `aapl` | `number` | 0 – 100 | Target weight for Apple Inc. |
-| `msft` | `number` | 0 – 100 | Target weight for Microsoft Corp. |
-| `tsla` | `number` | 0 – 100 | Target weight for Tesla, Inc. |
-| `xom` | `number` | 0 – 100 | Target weight for Exxon Mobil Corp. |
-
-#### Example
+Example request: `https://esg-portfolio-decarbonization-api.vercel.app/api?aapl=40&msft=30&tsla=0&xom=30`
