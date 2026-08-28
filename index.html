@@ -30,7 +30,7 @@
         
         .col-left, .col-right { display: flex; flex-direction: column; gap: 25px; }
         
-        .controls-box, .chart-box, .list-box, .methodology-box { 
+        .controls-box, .chart-box, .list-box { 
             background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; 
         }
         
@@ -46,13 +46,6 @@
         .c-name { font-weight: 600; font-size: 13px; }
         .c-sub { font-size: 11px; color: #64748b; }
         .c-stats { text-align: right; font-size: 11px; }
-
-        /* Methodology styling */
-        .method-text { font-size: 13px; line-height: 1.6; color: #475569; }
-        .method-text p { margin: 0 0 12px 0; }
-        .method-text ul { margin: 0 0 12px 0; padding-left: 20px; }
-        .method-text li { margin-bottom: 4px; }
-        .formula-badge { background: #f1f5f9; padding: 10px 14px; border-radius: 8px; font-family: monospace; font-size: 12px; color: #0f172a; border-left: 3px solid var(--accent); margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -114,30 +107,11 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: Chart + Methodology & Data Sources -->
+        <!-- RIGHT COLUMN: Chart -->
         <div class="col-right">
             <div class="chart-box">
                 <div class="card-label" style="margin-bottom: 16px;">Weighted WACI Contribution Breakdown</div>
                 <canvas id="carbonChart" height="130"></canvas>
-            </div>
-
-            <div class="methodology-box">
-                <div class="card-label" style="margin-bottom: 14px;">Data Sources & Methodology</div>
-                <div class="method-text">
-                    <p>This engine calculates <b>Weighted Average Carbon Intensity (WACI)</b> in accordance with TCFD and GHG Protocol standard frameworks:</p>
-                    
-                    <div class="formula-badge">
-                        WACI = ∑ [ Weightᵢ × (Scope 1 + Scope 2 Emissionsᵢ / Revenueᵢ) ]
-                    </div>
-
-                    <p><b>Audited Operational Baseline Figures:</b></p>
-                    <ul>
-                        <li><b>Apple (0.14 tCO₂e/$M):</b> 58.5k tCO₂e / $416.3B Rev</li>
-                        <li><b>Microsoft (0.59 tCO₂e/$M):</b> 143.5k tCO₂e / $245.1B Rev</li>
-                        <li><b>Tesla (10.92 tCO₂e/$M):</b> 1.06M tCO₂e / $96.8B Rev</li>
-                        <li><b>ExxonMobil (321.08 tCO₂e/$M):</b> 104.0M tCO₂e / $323.9B Rev</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -145,12 +119,11 @@
 
 <script>
     const LOGOS = {
-       "AAPL": "https://img.icons8.com/?size=100&id=30840&format=png&color=000000",
+        "AAPL": "https://img.icons8.com/?size=100&id=30840&format=png&color=000000",
         "MSFT": "https://img.icons8.com/?size=100&id=22989&format=png&color=000000",
         "TSLA": "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/tesla.svg",
         "XOM":  "./xom.png"
     };
-
 
     let chartInstance = null;
 
