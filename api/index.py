@@ -5,8 +5,8 @@ import urllib.parse
 PORTFOLIO_DATA = {
     "AAPL": {"name": "Apple Inc.", "revenue_m": 416290, "scope_1_2_tco2e": 58500, "sector": "Technology"},
     "MSFT": {"name": "Microsoft Corp.", "revenue_m": 245107, "scope_1_2_tco2e": 143510, "sector": "Technology"},
-    "TSLA": {"name": "Tesla Inc.", "revenue_m": 96773, "scope_1_2_tco2e": 1057000, "sector": "Automotive"},
-    "XOM":  {"name": "Exxon Mobil Corp.", "revenue_m": 323905, "scope_1_2_tco2e": 104000000, "sector": "Energy"}
+    "XOM":  {"name": "Exxon Mobil Corp.", "revenue_m": 323905, "scope_1_2_tco2e": 104000000, "sector": "Energy"},
+    "TSLA": {"name": "Tesla Inc.", "revenue_m": 96773, "scope_1_2_tco2e": 1057000, "sector": "Automotive"}
 }
 
 def calculate_waci(holdings: dict) -> dict:
