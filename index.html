@@ -25,14 +25,20 @@
         .action { color: var(--danger); }
         
         /* 2-Column Balanced Grid Layout */
-        .layout-grid { display: grid; grid-template-columns: 380px 1fr; gap: 25px; align-items: start; }
+        .layout-grid { display: grid; grid-template-columns: 380px 1fr; gap: 25px; align-items: stretch; }
         @media (max-width: 900px) { .layout-grid { grid-template-columns: 1fr; } }
         
         .col-left, .col-right { display: flex; flex-direction: column; gap: 25px; }
         
-        .controls-box, .chart-box, .list-box { 
+        .controls-box, .list-box { 
             background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; 
         }
+
+        .chart-box {
+            background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0;
+            height: 100%; box-sizing: border-box; display: flex; flex-direction: column;
+        }
+        .chart-wrapper { position: relative; flex-grow: 1; min-height: 350px; }
         
         .slider-group { margin-bottom: 18px; }
         .slider-label { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
@@ -111,7 +117,9 @@
         <div class="col-right">
             <div class="chart-box">
                 <div class="card-label" style="margin-bottom: 16px;">Weighted WACI Contribution Breakdown</div>
-                <canvas id="carbonChart" height="130"></canvas>
+                <div class="chart-wrapper">
+                    <canvas id="carbonChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -193,7 +201,11 @@
                         borderRadius: 6
                     }]
                 },
-                options: { responsive: true, scales: { y: { beginAtZero: true } } }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } } 
+                }
             });
 
         } catch (e) {
