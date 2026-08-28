@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESG Portfolio Decarbonization Dashboard</title>
+    <title>ESG Portfolio Decarbonization Engine</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #1e293b;
+            --primary: #0f172a;
             --accent: #10b981;
             --danger: #ef4444;
             --bg: #f8fafc;
@@ -16,38 +16,39 @@
         .header { background: var(--primary); color: white; padding: 35px 20px; text-align: center; }
         .header h1 { margin: 0; font-size: 26px; font-weight: 700; }
         .header p { margin-top: 8px; opacity: 0.8; font-size: 14px; }
-        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
         .card-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; font-weight: 600; }
         .card-val { font-size: 32px; font-weight: 700; color: var(--primary); margin-top: 8px; }
         .aligned { color: var(--accent); }
         .action { color: var(--danger); }
-        .chart-box { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; margin-bottom: 30px; }
+        .layout-main { display: grid; grid-template-columns: 350px 1fr; gap: 20px; }
+        @media (max-width: 850px) { .layout-main { grid-template-columns: 1fr; } }
+        .controls-box { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; height: fit-content; }
+        .slider-group { margin-bottom: 20px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+        input[type=range] { width: 100%; accent-color: var(--accent); }
+        .chart-box { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; margin-bottom: 20px; }
         .list-box { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-        .item { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #f1f5f9; }
+        .item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
         .item:last-child { border-bottom: none; }
-        .logo-wrap { width: 42px; height: 42px; border-radius: 8px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; margin-right: 16px; }
-        .logo-wrap img { width: 26px; height: 26px; object-fit: contain; }
+        .logo-wrap { width: 36px; height: 36px; border-radius: 8px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; margin-right: 12px; }
+        .logo-wrap img { width: 22px; height: 22px; object-fit: contain; }
         .company-info { display: flex; align-items: center; }
-        .c-name { font-weight: 600; font-size: 15px; }
-        .c-sub { font-size: 13px; color: #64748b; }
-        .c-stats { text-align: right; font-size: 13px; }
-        .loading { text-align: center; padding: 60px; color: #64748b; }
+        .c-name { font-weight: 600; font-size: 14px; }
+        .c-sub { font-size: 12px; color: #64748b; }
+        .c-stats { text-align: right; font-size: 12px; }
     </style>
 </head>
 <body>
 
 <div class="header">
     <h1>ESG Portfolio Carbon Decarbonization Engine</h1>
-    <p>Weighted Average Carbon Intensity (WACI) & Net Zero 2030 Pathway Alignment</p>
+    <p>Scenario Modeling: Real-Time WACI Recalculation & Net Zero 2030 Pathway Analysis</p>
 </div>
 
-<div class="container" id="loading">
-    <div class="loading">Fetching live analytics from Python API backend...</div>
-</div>
-
-<div class="container" id="dashboard" style="display:none;">
+<div class="container">
     <div class="grid">
         <div class="card">
             <div class="card-label">Portfolio WACI</div>
@@ -57,23 +58,53 @@
         <div class="card">
             <div class="card-label">2030 Net Zero Target</div>
             <div class="card-val">50.0</div>
-            <div style="font-size: 12px; color: #64748b; margin-top: 4px;">tCO₂e / $M Benchmark Target</div>
+            <div style="font-size: 12px; color: #64748b; margin-top: 4px;">tCO₂e / $M Target Benchmark</div>
         </div>
         <div class="card">
             <div class="card-label">Alignment Status</div>
-            <div class="card-val" id="status-val" style="font-size: 20px;">--</div>
-            <div style="font-size: 12px; color: #64748b; margin-top: 4px;" id="status-desc">GHG Protocol Threshold</div>
+            <div class="card-val" id="status-val" style="font-size: 18px;">--</div>
+            <div style="font-size: 12px; color: #64748b; margin-top: 4px;">GHG Protocol Threshold Check</div>
         </div>
     </div>
 
-    <div class="chart-box">
-        <div class="card-label" style="margin-bottom: 16px;">Carbon Intensity & Weighted Contribution</div>
-        <canvas id="carbonChart" height="100"></canvas>
-    </div>
+    <div class="layout-main">
+        <!-- Interactive Controls -->
+        <div class="controls-box">
+            <div class="card-label" style="margin-bottom: 16px;">Rebalance Asset Allocation (%)</div>
+            
+            <div class="slider-group">
+                <div class="slider-label"><span>Apple (AAPL)</span><span id="val-aapl">40%</span></div>
+                <input type="range" id="slide-aapl" min="0" max="100" value="40" oninput="updatePortfolio()">
+            </div>
+            
+            <div class="slider-group">
+                <div class="slider-label"><span>Microsoft (MSFT)</span><span id="val-msft">30%</span></div>
+                <input type="range" id="slide-msft" min="0" max="100" value="30" oninput="updatePortfolio()">
+            </div>
+            
+            <div class="slider-group">
+                <div class="slider-label"><span>Tesla (TSLA)</span><span id="val-tsla">0%</span></div>
+                <input type="range" id="slide-tsla" min="0" max="100" value="0" oninput="updatePortfolio()">
+            </div>
+            
+            <div class="slider-group">
+                <div class="slider-label"><span>Exxon Mobil (XOM)</span><span id="val-xom">30%</span></div>
+                <input type="range" id="slide-xom" min="0" max="100" value="30" oninput="updatePortfolio()">
+            </div>
+        </div>
 
-    <div class="list-box">
-        <div class="card-label" style="margin-bottom: 16px;">Portfolio Holdings Breakdown</div>
-        <div id="holdings-list"></div>
+        <!-- Dynamic Visualization & Breakdown -->
+        <div>
+            <div class="chart-box">
+                <div class="card-label" style="margin-bottom: 16px;">Weighted WACI Contribution Breakdown</div>
+                <canvas id="carbonChart" height="110"></canvas>
+            </div>
+
+            <div class="list-box">
+                <div class="card-label" style="margin-bottom: 16px;">Holding Breakdown</div>
+                <div id="holdings-list"></div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -81,32 +112,41 @@
     const LOGOS = {
         "AAPL": "https://img.icons8.com/?size=100&id=30840&format=png&color=000000",
         "MSFT": "https://img.icons8.com/?size=100&id=22989&format=png&color=000000",
+        "TSLA": "https://img.icons8.com/?size=100&id=113645&format=png&color=000000",
         "XOM":  "https://img.icons8.com/?size=100&id=115219&format=png&color=000000"
     };
 
-    async function loadData() {
+    let chartInstance = null;
+
+    async function updatePortfolio() {
+        const aapl = document.getElementById('slide-aapl').value;
+        const msft = document.getElementById('slide-msft').value;
+        const tsla = document.getElementById('slide-tsla').value;
+        const xom  = document.getElementById('slide-xom').value;
+
+        document.getElementById('val-aapl').innerText = aapl + '%';
+        document.getElementById('val-msft').innerText = msft + '%';
+        document.getElementById('val-tsla').innerText = tsla + '%';
+        document.getElementById('val-xom').innerText  = xom + '%';
+
         try {
-            const res = await fetch('/api');
+            const res = await fetch(`/api?aapl=${aapl}&msft=${msft}&tsla=${tsla}&xom=${xom}`);
             const data = await res.json();
 
             document.getElementById('waci-val').innerText = data.portfolio_waci_tco2e_per_m_rev;
             
             const statusEl = document.getElementById('status-val');
             statusEl.innerText = data.alignment_status;
-            if(data.alignment_status.includes("Action")) {
-                statusEl.className = 'card-val action';
-            } else {
-                statusEl.className = 'card-val aligned';
-            }
+            statusEl.className = data.alignment_status.includes("Action") ? 'card-val action' : 'card-val aligned';
 
             const listEl = document.getElementById('holdings-list');
+            listEl.innerHTML = '';
+            
             const labels = [];
-            const intensityData = [];
             const contribData = [];
 
             data.holdings_breakdown.forEach(h => {
                 labels.push(h.ticker);
-                intensityData.push(h.carbon_intensity);
                 contribData.push(h.weighted_contribution);
 
                 const logo = LOGOS[h.ticker] || '';
@@ -116,38 +156,43 @@
                             <div class="logo-wrap"><img src="${logo}" alt="${h.ticker}"></div>
                             <div>
                                 <div class="c-name">${h.name} (${h.ticker})</div>
-                                <div class="c-sub">Portfolio Weight: ${h.portfolio_weight}</div>
+                                <div class="c-sub">Normalized Weight: ${h.portfolio_weight}</div>
                             </div>
                         </div>
                         <div class="c-stats">
                             Intensity: <b>${h.carbon_intensity}</b> tCO₂e/$M<br>
-                            Weighted Contribution: <span style="color:var(--accent); font-weight:600;">+${h.weighted_contribution}</span>
+                            WACI Contribution: <span style="color:var(--accent); font-weight:600;">+${h.weighted_contribution}</span>
                         </div>
                     </div>
                 `);
             });
 
+            // Update Chart
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
             const ctx = document.getElementById('carbonChart').getContext('2d');
-            new Chart(ctx, {
+            chartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: labels,
-                    datasets: [
-                        { label: 'Carbon Intensity (tCO2e/$M)', data: intensityData, backgroundColor: '#94a3b8' },
-                        { label: 'Weighted WACI Contribution', data: contribData, backgroundColor: '#10b981' }
-                    ]
+                    datasets: [{
+                        label: 'Weighted WACI Contribution (tCO2e / $M Rev)',
+                        data: contribData,
+                        backgroundColor: '#10b981',
+                        borderRadius: 6
+                    }]
                 },
                 options: { responsive: true, scales: { y: { beginAtZero: true } } }
             });
 
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
         } catch (e) {
-            document.getElementById('loading').innerHTML = '<div style="color:red;">Error fetching API analytics.</div>';
+            console.error("API error:", e);
         }
     }
 
-    window.onload = loadData;
+    window.onload = updatePortfolio;
 </script>
 </body>
 </html>
