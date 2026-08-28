@@ -3,10 +3,10 @@ import json
 import urllib.parse
 
 PORTFOLIO_DATA = {
-    "AAPL": {"name": "Apple Inc.", "revenue_m": 383285, "scope_1_2_tco2e": 324100, "sector": "Technology"},
-    "MSFT": {"name": "Microsoft Corp.", "revenue_m": 211915, "scope_1_2_tco2e": 400400, "sector": "Technology"},
-    "TSLA": {"name": "Tesla Inc.", "revenue_m": 96773, "scope_1_2_tco2e": 1210000, "sector": "Automotive"},
-    "XOM":  {"name": "Exxon Mobil Corp.", "revenue_m": 344582, "scope_1_2_tco2e": 60000000, "sector": "Energy"}
+    "AAPL": {"name": "Apple Inc.", "revenue_m": 416290, "scope_1_2_tco2e": 58500, "sector": "Technology"},
+    "MSFT": {"name": "Microsoft Corp.", "revenue_m": 245107, "scope_1_2_tco2e": 143510, "sector": "Technology"},
+    "TSLA": {"name": "Tesla Inc.", "revenue_m": 96773, "scope_1_2_tco2e": 1057000, "sector": "Automotive"},
+    "XOM":  {"name": "Exxon Mobil Corp.", "revenue_m": 323905, "scope_1_2_tco2e": 104000000, "sector": "Energy"}
 }
 
 def calculate_waci(holdings: dict) -> dict:
