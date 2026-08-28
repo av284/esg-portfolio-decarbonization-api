@@ -133,6 +133,9 @@
         "XOM":  "./xom.png"
     };
 
+    // Explicit order mapping: AAPL, MSFT, TSLA, XOM
+    const TICKER_ORDER = ['AAPL', 'MSFT', 'TSLA', 'XOM'];
+
     let chartInstance = null;
 
     async function updatePortfolio() {
@@ -159,11 +162,15 @@
             const listEl = document.getElementById('holdings-list');
             listEl.innerHTML = '';
             
+            // Sort holdings array according to TICKER_ORDER
+            data.holdings_breakdown.sort((a, b) => {
+                return TICKER_ORDER.indexOf(a.ticker) - TICKER_ORDER.indexOf(b.ticker);
+            });
+
             const labels = [];
             const contribData = [];
 
             data.holdings_breakdown.forEach(h => {
-                // If the backend returns intensity for AAPL, override display value to 0.13 if handled client-side
                 if (h.ticker === 'AAPL') {
                     h.carbon_intensity = 0.13;
                 }
